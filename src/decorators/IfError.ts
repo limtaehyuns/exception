@@ -1,27 +1,6 @@
-import {
-  ValidationArguments,
-  ValidationOptions,
-  registerDecorator,
-} from 'class-validator';
+import { applyDecorators } from '@nestjs/common';
 
-function IfError(substring: string, validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
-    registerDecorator({
-      name: 'containsSubstring',
-      target: object.constructor,
-      propertyName: propertyName,
-      constraints: [substring],
-      options: validationOptions,
-      validator: {
-        validate(value: any, args: ValidationArguments) {
-          if (typeof value !== 'string') {
-            return false;
-          }
-          return value.includes(substring);
-        },
-      },
-    });
-  };
+export function IfError(data) {
+  console.log(data);
+  return applyDecorators();
 }
-
-export default IfError;

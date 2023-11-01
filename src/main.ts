@@ -11,8 +11,8 @@ async function bootstrap() {
     new ValidationPipe({
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
         const messages = validationErrors
-          .map((error) => `${Object.values(error.constraints).join(', ')}`)
-          .join(', ');
+          .map((error) => `${Object.values(error.constraints).join(',')}`)
+          .join(',');
 
         return new ValidationException(messages);
       },
