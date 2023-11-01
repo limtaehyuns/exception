@@ -8,11 +8,12 @@ import {
   Delete,
   ForbiddenException,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { MockService } from './mock.service';
 import { CreateMockDto } from './dto/create-mock.dto';
 import { UpdateMockDto } from './dto/update-mock.dto';
-import { MockException } from 'src/http-exception/MockException';
+import { QueryMockDto } from './dto/query-mock.dto';
 
 @Controller('mock')
 export class MockController {
@@ -23,8 +24,8 @@ export class MockController {
   }
 
   @Get()
-  findAll() {
-    throw new MockException();
+  findAll(@Query() query: QueryMockDto) {
+    return query;
   }
 
   @Get(':id')
