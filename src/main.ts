@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception/http-exception.filter';
-import { HttpException, ValidationError, ValidationPipe } from '@nestjs/common';
+import { ValidationError, ValidationPipe } from '@nestjs/common';
 import { ValidationException } from './http-exception/ValidationException';
 
 async function bootstrap() {
@@ -10,8 +10,11 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        console.log(validationErrors);
-        return new ValidationException();
+        const messages = validationErrors
+          .map((error) => `${Object.values(error.constraints).join(', ')}`)
+          .join(', ');
+
+        return new ValidationException(messages);
       },
     }),
   );

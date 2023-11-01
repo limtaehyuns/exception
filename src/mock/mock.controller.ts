@@ -30,7 +30,7 @@ export class MockController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    throw new HttpException('', 500);
+    return id;
   }
 
   @Patch(':id')
