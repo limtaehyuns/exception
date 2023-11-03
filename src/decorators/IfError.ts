@@ -1,4 +1,4 @@
 import { SetMetadata, applyDecorators } from '@nestjs/common';
 
-export const IfException = (exception: string) =>
-  applyDecorators(SetMetadata('exception', exception));
+export const IfException = (decoratorName: string, exception: string) =>
+  applyDecorators(SetMetadata(`${decoratorName}:exception`, exception));

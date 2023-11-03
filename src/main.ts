@@ -18,12 +18,24 @@ async function bootstrap() {
           validatorOptions?: ValidatorOptions,
         ): Promise<ValidationError[]> {
           if (typeof object === 'object') {
-            const errorType = Reflect.getMetadata('exception', object);
-            if (errorType) {
-              throw new ValidationException(errorType);
-            }
+            const validateResult = await validate(object, validatorOptions);
+            const flatted = validateResult
+              .map((error) => {
+                const { constraints } = error;
+                return Object.keys(constraints);
+              })
+              .flat();
 
-            return validate(object, validatorOptions);
+            flatted.forEach((key) => {
+              console.log(`${key}:exception`);
+              const errorType = Reflect.getMetadata(`${key}:exception`, object);
+              console.log(errorType);
+              if (errorType) {
+                throw new ValidationException(errorType);
+              }
+            });
+
+            return validateResult;
           }
 
           throw new Error('Function not implemented.');
