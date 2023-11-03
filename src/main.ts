@@ -27,7 +27,6 @@ async function bootstrap() {
               .flat();
 
             flatted.forEach((key) => {
-              console.log(`${key}:exception`);
               const errorType = Reflect.getMetadata(`${key}:exception`, object);
               console.log(errorType);
               if (errorType) {
