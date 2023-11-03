@@ -1,3 +1,4 @@
-// import { HttpException, SetMetadata } from '@nestjs/common';
+import { SetMetadata, applyDecorators } from '@nestjs/common';
 
-// export const IfException(exception: HttpException) => SetMetadata('exception', exception);
+export const IfException = (exception: string) =>
+  applyDecorators(SetMetadata('exception', exception));

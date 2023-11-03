@@ -38,10 +38,9 @@ validatorPackage: {
     validatorOptions?: ValidatorOptions,
   ): ValidationError[] | Promise<ValidationError[]> {
     if (typeof object === 'object') {
-      console.log(reflector.getMetadata);
       return validate(object, validatorOptions);
     }
-    
+
     throw new Error('Function not implemented.');
   },
 }

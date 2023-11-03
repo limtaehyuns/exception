@@ -5,22 +5,24 @@ import { ValidationError, ValidationPipe } from '@nestjs/common';
 import { ValidationException } from './http-exception/ValidationException';
 import { ValidatorOptions } from '@nestjs/common/interfaces/external/validator-options.interface';
 import { validate } from 'class-validator';
-import { Reflector } from '@nestjs/core';
 import 'reflect-metadata';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const reflector = new Reflector();
 
   app.useGlobalPipes(
     new ValidationPipe({
       validatorPackage: {
-        validate: function (
+        validate: async function (
           object: unknown,
           validatorOptions?: ValidatorOptions,
-        ): ValidationError[] | Promise<ValidationError[]> {
+        ): Promise<ValidationError[]> {
           if (typeof object === 'object') {
-            console.log(reflector.getMetadata);
+            const errorType = Reflect.getMetadata('exception', object);
+            if (errorType) {
+              throw new ValidationException(errorType);
+            }
+
             return validate(object, validatorOptions);
           }
 
